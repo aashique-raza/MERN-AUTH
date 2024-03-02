@@ -31,7 +31,7 @@ const createUser= async(req,res,next)=>{
         // const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
     
         // Respond with token and redirect to home page
-        res.status(200).json({type:true,msg:'registration successfull'});
+        res.status(200).json({success:true,msg:'registration successfull'});
       } catch (error) {
        next(error)
       }
