@@ -3,19 +3,22 @@
 import User from "../models/userModel.js";
 import bcrypt from 'bcrypt'
 
+import { errorHandler } from "../utility/cutomErro.js";
 
 
-const createUser= async(req,res)=>{
+
+const createUser= async(req,res,next)=>{
 
     try {
         const { username, email, password } = req.body;
     
         if (!username || !email || !password)
-          return res.status(401).json({type:false, msg: "all fileds required" });
+        //   return res.status(401).json({type:false, msg: "all fileds required" });
+          return next(errorHandler(300,'all fields are required'))
     
         let existUser = await User.findOne({ email });
     
-        if (existUser) return res.status(401).json({type:false, msg: "email already taken" });
+        if (existUser)  return next(errorHandler(403,'email already taken'))
     
         
         const hashingpassword = bcrypt.hashSync(password,10)
@@ -30,11 +33,7 @@ const createUser= async(req,res)=>{
         // Respond with token and redirect to home page
         res.status(200).json({type:true,msg:'registration successfull'});
       } catch (error) {
-        res.status(500).json({
-          type:false,
-          msg:`please try again later`
-        })
-        console.log(`account create failed ${error}`);
+       next(error)
       }
 
 
