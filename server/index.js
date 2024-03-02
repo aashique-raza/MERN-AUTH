@@ -4,8 +4,9 @@ import express from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
 import DBconnection from './DB/DBconnection.js'
-import router from './routes/userRoute.js'
+import userRouter from './routes/userRoute.js'
 import cors from 'cors'
+import authRoute from './routes/authRoute.js'
 
 
 
@@ -22,7 +23,8 @@ app.use(cors())
 
 // load routes--
 
-app.use('/api',router)
+app.use('/api/user',userRouter)
+app.use('/api/auth',authRoute)
 
 
 
