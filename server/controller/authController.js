@@ -43,6 +43,7 @@ const createUser= async(req,res,next)=>{
 
 const signin = async (req, res, next) => {
     const { email, password } = req.body;
+    // console.log(email,password)
     if(!email || !password) return next(errorHandler(401,'field are required'))
     try {
       const validUser = await User.findOne({ email });

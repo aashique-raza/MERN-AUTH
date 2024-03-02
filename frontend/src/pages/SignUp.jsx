@@ -1,12 +1,15 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {signInFailure,signInStart,signInSuccess} from '../features/userSlice'
+import {useDispatch,useSelector} from "react-redux"
+
 
 function SignUp() {
   const [formData, setformData] = useState({});
   const [error, setEroor] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const navigate=useNavigate()
   const handleOnchange = (e) => {
     setformData({ ...formData, [e.target.id]: e.target.value });
     // console.log(formData)
@@ -32,6 +35,7 @@ function SignUp() {
 
       setEroor(result.message)
       setLoading(false);
+      navigate('/sign-in')
 
       console.log(result);
     } catch (error) {
@@ -73,12 +77,12 @@ function SignUp() {
           id="password"
           onChange={handleOnchange}
         />
-        <button className="w-full  py-3 px-4  bg-slate-900 text-white uppercase text-1xl font-mono font-semibold">
-          {loading ? "loading..." : "create account"}
+        <button className="w-full  py-3 px-4  bg-slate-900 text-white capitalize text-1xl font-mono font-semibold">
+          {loading ? "creating..." : "create account"}
         </button>
       </form>
       <div className="w-full">
-        <button className=" mb-4 w-full py-3 px-4  bg-red-500 text-white uppercase text-1xl font-mono font-semibold">
+        <button className=" mb-4 w-full py-3 px-4  bg-red-500 text-white capitalize text-1xl font-mono font-semibold">
           create account with google
         </button>
       </div>

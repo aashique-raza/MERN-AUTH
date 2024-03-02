@@ -10,13 +10,13 @@ function Header() {
 
         <ul className='flex gap-4 items-center'>
             <li className=' list-none'>
-                <NavLink className='text-slate-600  text-xl uppercase text-pretty font-mono' to={'/'}>home</NavLink>
+                <NavLink className='text-slate-600  text-xl  capitalize text-pretty font-mono' to={'/'}>home</NavLink>
             </li>
             <li className=' list-none'>
-                <NavLink className='text-slate-600  text-xl uppercase text-pretty font-mono' to={'/about'}>about</NavLink>
+                <NavLink className='text-slate-600  text-xl capitalize text-pretty font-mono' to={'/about'}>about</NavLink>
             </li>
             <li className=' list-none'>
-                <NavLink className='text-slate-600  text-xl uppercase text-pretty font-mono' to={'/sign-in'}>sign in</NavLink>
+                <NavLink className='text-slate-600  text-xl capitalize text-pretty font-mono' to={'/sign-in'}>signin</NavLink>
             </li>
         </ul>
        
