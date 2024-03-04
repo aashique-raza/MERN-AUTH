@@ -67,7 +67,8 @@ export const {
   updateUserSuccess,
   deleteUserFailure,
   deleteUserStart,
-  deleteUserSuccess
+  deleteUserSuccess,
+  signOut
   
 } = userSlice.actions;
 
