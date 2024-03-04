@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { NavLink,useNavigate } from 'react-router-dom';
+import Oauth from '../components/Oauth';
 
 import { signInFailure,signInSuccess,signInStart } from '../features/userSlice';
 import { useDispatch,useSelector } from 'react-redux';
@@ -83,11 +84,7 @@ function SignIn() {
           {loading ? "signing..." : "signin your account"}
         </button>
       </form>
-      <div className="w-full">
-        <button className=" mb-4 w-full py-3 px-4  bg-red-500 text-white capitalize text-1xl font-mono font-semibold">
-          signin with google
-        </button>
-      </div>
+      <Oauth/>
       {error ? (
         <p className="my-3 text-red-600 text-center text-pretty capitalize font-bold text-xs">
           {error.message}

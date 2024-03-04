@@ -3,6 +3,7 @@ import { NavLink,useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {signInFailure,signInStart,signInSuccess} from '../features/userSlice'
 import {useDispatch,useSelector} from "react-redux"
+import Oauth from "../components/Oauth";
 
 
 function SignUp() {
@@ -28,19 +29,20 @@ function SignUp() {
         body: JSON.stringify(formData),
       });
       const result = await resp.json();
-      if (result.success) {
+      if (result.success===false) {
         setLoading(false);
-        setEroor(false);
+        setEroor(result.message);
+        return
       }
 
-      setEroor(result.message)
-      setLoading(false);
+      
+      
       navigate('/sign-in')
 
       console.log(result);
     } catch (error) {
       console.log(`signup data sending failed`);
-      setEroor(true);
+      setEroor(error.message);
     }
   };
 
@@ -81,11 +83,7 @@ function SignUp() {
           {loading ? "creating..." : "create account"}
         </button>
       </form>
-      <div className="w-full">
-        <button className=" mb-4 w-full py-3 px-4  bg-red-500 text-white capitalize text-1xl font-mono font-semibold">
-          create account with google
-        </button>
-      </div>
+      <Oauth/>
       {error ? (
         <p className="my-3 text-red-600 text-center text-pretty capitalize font-bold text-xs">
           {error}
