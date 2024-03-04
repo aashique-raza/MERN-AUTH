@@ -94,7 +94,7 @@ function SignUp() {
 
       <div>
         have an account?
-        <NavLink className="font-bold text-gray-400">click here</NavLink>
+        <NavLink to={'/sign-in'} className="font-bold text-gray-400">click here</NavLink>
       </div>
     </div>
   );
