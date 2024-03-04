@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
@@ -9,17 +9,20 @@ import {
   uploadBytesResumable,
 } from 'firebase/storage';
 import { app } from '../firebase';
+import { updateUserFailure,updateUserStart,updateUserSuccess,deleteUserFailure,deleteUserStart,deleteUserSuccess} from '../features/userSlice'
+
 
 import { useReducer } from "react";
 
 function Profile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,loading,error } = useSelector((state) => state.user);
   const refFile = useRef(null);
   const [image, setImage] = useState(undefined);
   const [imagePercent, setImagePercent] = useState(0);
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const dispatch=useDispatch()
 
   useEffect(() => {
     if (image) {
@@ -54,13 +57,39 @@ function Profile() {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
+  console.log(formData)
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(data)
+      if (data.success === false) {
+        dispatch(updateUserFailure(data));
+        return;
+      }
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error));
+    }
+  }
+
   return (
     <div className=" mx-auto my-7 border-2 border-teal-600 px-6  py-3 shadow-lg font-extrabold w-96 ">
       <h1 className=" text-center uppercase text-3xl text-teal-800 font-mono mb-6">
         profile
       </h1>
 
-      <form action="" className="w-full  mt-4 ">
+      <form action="" className="w-full  mt-4 " onSubmit={handleSubmit}>
         <div className="flex justify-center items-center flex-col  mb-5">
           <input
             type="file"
@@ -97,27 +126,30 @@ function Profile() {
           type="text"
           className=" w-full py-2 px-3 bg-slate-200 text-teal-800 text-xl font-mono font-medium mb-3"
           placeholder="username"
-          value={currentUser.username}
+          id="username"
+          defaultValue={currentUser.username}
           onChange={handleChange}
         />
         <input
-          type="text"
+          type="email"
           className=" w-full py-2 px-3 bg-slate-200 text-teal-800 text-xl font-mono font-medium mb-3"
           placeholder="email"
-          value={currentUser.email}
+          defaultValue={currentUser.email}
           onChange={handleChange}
+          id="email"
         />
         <input
-          type="text"
+          type="password"
           className=" w-full py-2 px-3 bg-slate-200 text-teal-800 text-xl font-mono font-medium mb-3"
           placeholder="password"
           onChange={handleChange}
+          id="password"
         />
         <button
-          type="button"
+          
           className=" w-full py-2 px-3 bg-slate-900 b text-teal-100 text-1xl font-serif   mb-3  uppercase"
         >
-          update
+          {loading ? 'updating..' : 'update'}
         </button>
       </form>
       <div className="flex  justify-between items-center">
@@ -129,6 +161,26 @@ function Profile() {
           sign out
         </Link>
       </div>
+      {
+        updateSuccess ? (
+          <p className=" text-green-600 capitalize text-xs text-center my-3">updated successfully </p>
+
+        ) : 
+        (
+          <p></p>
+        )
+      }
+      {
+        error ? (
+          <p className=" text-red-600 capitalize text-xs text-center my-3">{error.message} </p>
+
+        ) : 
+        (
+          <p></p>
+        )
+      }
+      
+      
     </div>
   );
 }

@@ -7,6 +7,7 @@ import User from '../models/userModel.js';
 
 
 const updateUser = async (req, res, next) => {
+    console.log(req.body)
     if (req.user.id !== req.params.id) {
       return next(errorHandler(401, 'You can update only your account!'));
     }
@@ -27,9 +28,11 @@ const updateUser = async (req, res, next) => {
         },
         { new: true }
       );
+    //   console.log(updatedUser)
       const { password, ...rest } = updatedUser._doc;
       res.status(200).json(rest);
     } catch (error) {
+        console.log(error)
       next(error);
     }
   };
