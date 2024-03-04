@@ -83,6 +83,23 @@ function Profile() {
     }
   }
 
+  const handleDeleteAccount = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(error));
+    }
+  }
+
   return (
     <div className=" mx-auto my-7 border-2 border-teal-600 px-6  py-3 shadow-lg font-extrabold w-96 ">
       <h1 className=" text-center uppercase text-3xl text-teal-800 font-mono mb-6">
@@ -153,13 +170,15 @@ function Profile() {
         </button>
       </form>
       <div className="flex  justify-between items-center">
-        <Link className=" text-red-600 capitalize font-medium text-1xl">
-          delete account
-        </Link>
-        <Link className=" text-red-600 capitalize font-medium text-1xl">
-          {" "}
+        <button onClick={handleDeleteAccount} className=" text-red-600 capitalize font-medium text-1xl cursor-pointer outline-none border-none">
+          {
+            loading ? 'deleting...' : 'delete account'
+          }
+        </button>
+        <button onClick={handleDeleteAccount}  className=" text-red-600 capitalize font-medium text-1xl cursor-pointer outline-none border-none">
+          
           sign out
-        </Link>
+        </button>
       </div>
       {
         updateSuccess ? (
