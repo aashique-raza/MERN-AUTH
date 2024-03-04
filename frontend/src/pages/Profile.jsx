@@ -72,7 +72,7 @@ function Profile() {
             hidden
           />
           <img
-            src={currentUser.profilePicture}
+            src={formData.profilePicture || currentUser.profilePicture}
             alt="proifle"
             className=" rounded-full h-24 w-24 "
             onClick={(e) => {

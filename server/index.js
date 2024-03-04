@@ -7,6 +7,7 @@ import DBconnection from './DB/DBconnection.js'
 import userRouter from './routes/userRoute.js'
 import cors from 'cors'
 import authRoute from './routes/authRoute.js'
+import cookieParser from 'cookie-parser'
 
 
 
@@ -19,6 +20,7 @@ const app=express()
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(cors())
+app.use(cookieParser())
 
 
 // load routes--
